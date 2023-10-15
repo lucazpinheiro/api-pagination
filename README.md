@@ -12,14 +12,14 @@ $ npm install
 
 ## Running the app
 
+### create a `.env` from `.env.example`
+
 ```bash
-# create local (sqlite) db andrun prisma migration
-npx prisma init
-npx prisma migrate dev --name init
+# create local (sqlite) db and run prisma migration
+npx prisma migrate dev 
 
 # or
-# pnpm dlx prisma init
-# pnpm dlx prisma migrate dev --name init
+# pnpm dlx prisma migrate dev
 
 # populate deeb with fake data
 npx prisma db seed
@@ -59,5 +59,5 @@ $ npm run test:cov
 
 ```bash
 # curl 'http://localhost:3000/api/products'
-# curl 'http://localhost:3000/api/products?limit=100&offset=0'
+# curl 'http://localhost:3000/api/products?limit=80&page=1'
 ```

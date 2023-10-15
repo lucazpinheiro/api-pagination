@@ -2,10 +2,11 @@ import { Product } from './product';
 
 export type Pagination = {
   total_records: number;
-  current_page?: number;
   total_pages?: number;
-  next_page?: number;
-  prev_page?: number;
+  current_page?: number;
+  current_page_total_records?: number;
+  next_page?: string;
+  prev_page?: string;
 };
 
 export type APIResponse = {

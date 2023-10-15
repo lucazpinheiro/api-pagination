@@ -1,4 +1,5 @@
 export type QueryParams = {
-  limit: number;
-  offset: number;
+  limit?: number;
+  page?: number;
+  offset?: number;
 };
