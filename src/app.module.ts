@@ -5,7 +5,7 @@ import { PrismaModule } from './modules/prisma/prisma.module';
 import { DatabaseModule } from './modules/database/database.module';
 
 @Module({
-  imports: [PrismaModule, DatabaseModule],
+  imports: [DatabaseModule],
   controllers: [AppController],
   providers: [AppService, PrismaModule],
 })

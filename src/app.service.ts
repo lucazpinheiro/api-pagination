@@ -10,84 +10,46 @@ import { DatabaseService } from './modules/database/database.service';
 @Injectable()
 export class AppService {
   private DEFAULT_PAGINATION_LIMIT = 20;
-  constructor(
-    private prisma: PrismaService,
-    private databaseService: DatabaseService,
-  ) {}
-
-  // async countRecords(): Promise<number> {
-  //   return await this.prisma.product.count();
-  // }
-
-  // async listProducts(limit?: number, page?: number): Promise<Product[]> {
-  //   const queryOptions: Prisma.ProductFindManyArgs = {};
-
-  //   if (limit) {
-  //     queryOptions.take = limit;
-  //   }
-
-  //   if (page) {
-  //     queryOptions.skip = page;
-  //   }
-
-  //   const rawProducts = await this.prisma.product.findMany(queryOptions);
-
-  //   const parsedProducts = rawProducts.map((p) => {
-  //     return {
-  //       productID: p.productID,
-  //       isAvailable: p.isAvailable,
-  //       title: p.title,
-  //       price: p.price,
-  //       description: p.description,
-  //     };
-  //   });
-
-  //   return parsedProducts;
-  // }
+  constructor(private databaseService: DatabaseService) {}
 
   async readOperation(
     queryLimit?: number,
     queryPage?: number,
   ): Promise<[Pagination, Product[]]> {
-    // const totalRecords = await this.countRecords();
+    const totalRecords = await this.databaseService.countTotal();
 
-    // const totalPages = Math.ceil(
-    //   totalRecords / (queryLimit || this.DEFAULT_PAGINATION_LIMIT),
-    // );
+    const totalPages = Math.ceil(
+      totalRecords / (queryLimit || this.DEFAULT_PAGINATION_LIMIT),
+    );
 
-    // const paginationInfo: Pagination = {
-    //   total_records: totalRecords,
-    //   total_pages: totalPages,
-    // };
+    const paginationInfo: Pagination = {
+      total_records: totalRecords,
+      total_pages: totalPages,
+    };
 
-    // const limit = Number(queryLimit);
-    // const page = (Number(queryPage) - 1) * limit;
+    const limit = Number(queryLimit);
+    const page = (Number(queryPage) - 1) * limit;
 
-    // if (Number(queryPage) < totalPages) {
-    //   paginationInfo.next_page = `/api/products?limit=${limit}&page=${
-    //     Number(queryPage) + 1
-    //   }`;
-    // }
+    if (Number(queryPage) < totalPages) {
+      paginationInfo.next_page = `/api/products?limit=${limit}&page=${
+        Number(queryPage) + 1
+      }`;
+    }
 
-    // if (page >= 1) {
-    //   paginationInfo.prev_page = `/api/products?limit=${limit}&page=${
-    //     Number(queryPage) - 1
-    //   }`;
-    // }
+    if (page >= 1) {
+      paginationInfo.prev_page = `/api/products?limit=${limit}&page=${
+        Number(queryPage) - 1
+      }`;
+    }
 
-    // const products = await this.listProducts(limit, page);
+    const products = await this.databaseService.get({
+      limit,
+      page,
+    });
 
-    // paginationInfo.current_page_total_records = products.length;
-    // paginationInfo.current_page = Number(queryPage);
+    paginationInfo.current_page_total_records = products.length;
+    paginationInfo.current_page = Number(queryPage);
 
-    // return [paginationInfo, products];
-
-    const products = await this.databaseService.getAll();
-    return [
-      {
-        total_records: products.length,
-      },
-      products,
-    ];
+    return [paginationInfo, products];
   }
 }

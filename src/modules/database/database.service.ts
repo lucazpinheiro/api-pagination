@@ -8,6 +8,10 @@ import { DatabaseQuery } from '@/types/db.query';
 export class DatabaseService implements IDatabase {
   constructor(private prisma: PrismaService) {}
 
+  async countTotal(): Promise<number> {
+    return await this.prisma.product.count();
+  }
+
   async getAll(): Promise<Product[]> {
     const rawProducts = await this.prisma.product.findMany();
 
