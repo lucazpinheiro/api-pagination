@@ -49,7 +49,7 @@ export class AppService {
       totalRecords / (queryLimit || this.DEFAULT_PAGINATION_LIMIT),
     );
 
-    const pagiantionInfo: Pagination = {
+    const paginationInfo: Pagination = {
       total_records: totalRecords,
       total_pages: totalPages,
     };
@@ -58,22 +58,22 @@ export class AppService {
     const page = (Number(queryPage) - 1) * limit;
 
     if (Number(queryPage) < totalPages) {
-      pagiantionInfo.next_page = `/api/products?limit=${limit}&page=${
+      paginationInfo.next_page = `/api/products?limit=${limit}&page=${
         Number(queryPage) + 1
       }`;
     }
 
     if (page >= 1) {
-      pagiantionInfo.prev_page = `/api/products?limit=${limit}&page=${
+      paginationInfo.prev_page = `/api/products?limit=${limit}&page=${
         Number(queryPage) - 1
       }`;
     }
 
     const products = await this.listProducts(limit, page);
 
-    pagiantionInfo.current_page_total_records = products.length;
-    pagiantionInfo.current_page = Number(queryPage);
+    paginationInfo.current_page_total_records = products.length;
+    paginationInfo.current_page = Number(queryPage);
 
-    return [pagiantionInfo, products];
+    return [paginationInfo, products];
   }
 }
