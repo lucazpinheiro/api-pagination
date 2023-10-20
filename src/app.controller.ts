@@ -9,14 +9,14 @@ export class AppController {
 
   @Get('/products')
   async findAll(@Query() query: QueryParams) {
-    const [pagiantionInfo, products] = await this.appService.readOperation(
+    const [paginationInfo, products] = await this.appService.readOperation(
       query?.limit,
       query?.page,
     );
 
     const response: APIResponse = {
       data: products,
-      pagination: pagiantionInfo,
+      pagination: paginationInfo,
     };
     return response;
   }
