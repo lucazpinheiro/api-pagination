@@ -16,7 +16,7 @@ export class AppService {
     queryLimit?: number,
     queryPage?: number,
   ): Promise<[Pagination, Product[]]> {
-    const totalRecords = await this.databaseService.countTotal();
+    const totalRecords = await this.databaseService.getTotalCount();
 
     const totalPages = Math.ceil(
       totalRecords / (queryLimit || this.DEFAULT_PAGINATION_LIMIT),
